@@ -11,9 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          repository: vishnubob/wait-for-it
-          path: wait-for-it
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
@@ -25,6 +22,9 @@ jobs:
         with:
           image-tag: 'latest'
           install-awslocal: 'true'
+
+      - name: Check current folder
+        run: ls -la
 
       - name: Terraform Init
         run: terraform init
