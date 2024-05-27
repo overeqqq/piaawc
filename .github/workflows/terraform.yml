@@ -18,7 +18,7 @@ jobs:
           terraform_version: 1.0.0
 
       - name: Run localstack with docker
-        run: docker run --rm -it -p 4566:4566 -p 4571:4571 localstack/localstack
+        run: docker run --rm -p 4566:4566 -p 4571:4571 localstack/localstack
 
       - name: Terraform Init
         run: terraform init
