@@ -20,10 +20,11 @@ jobs:
         with:
           terraform_version: 1.0.0
 
-      - name: Run localstack with docker
-        run: |
-          docker run --rm -p 4566:4566 -p 4571:4571 localstack/localstack &
-          wait-for-it -t 240 localhost:4566
+      - name: Start LocalStack
+        uses: LocalStack/setup-localstack@main
+        with:
+          image-tag: 'latest'
+          install-awslocal: 'true'
 
       - name: Terraform Init
         run: terraform init
