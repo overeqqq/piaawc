@@ -1,8 +1,9 @@
-name: Terraform LocalStack
+
+name: Terraform
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   terraform:
@@ -14,17 +15,15 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Start LocalStack
-        uses: localstack/setup-localstack@v2
+        uses: localstack/start-localstack@latest
         with:
           services: s3
-          startMethod: docker-compose
-          localstackVersion: latest
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply
         env:
           AWS_DEFAULT_REGION: us-east-1
           AWS_ACCESS_KEY_ID: test
