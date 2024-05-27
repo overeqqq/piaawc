@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          repository: vishnubob/wait-for-it
+          path: wait-for-it
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
