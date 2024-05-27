@@ -1,32 +1,32 @@
-name: Terraform
+name: Terraform LocalStack
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Set up Docker
-        uses: actions/setup-docker@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: Start LocalStack
+        uses: localstack/setup-localstack@v2
+        with:
+          services: s3
+          startMethod: docker-compose
+          localstackVersion: latest
 
-      - name: Start Localstack
-        run: |
-          docker run -d -p 4566:4566 -p 4571:4571 --name localstack localstack/localstack
-
-      - name: Initialize Terraform
+      - name: Terraform Init
         run: terraform init
-        working-directory: piaawch-2
 
-      - name: Apply Terraform configuration
-        run: terraform apply
-        working-directory: piaawch-2
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_S3_ENDPOINT: http://localhost:4566
