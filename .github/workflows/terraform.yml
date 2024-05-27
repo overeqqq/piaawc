@@ -12,9 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Docker
-        uses: actions/setup-docker@v3
-
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
