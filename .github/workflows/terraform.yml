@@ -12,13 +12,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Install Docker
+        uses: actions/setup-docker@v3
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
 
       - name: Run localstack with docker
-        run: docker run --rm -p 4566:4566 -p 4571:4571 localstack/localstack
+        run: |
+          docker run --rm -p 4566:4566 -p 4571:4571 localstack/localstack &
+          wait-for-it -t 60 localhost:4566
 
       - name: Terraform Init
         run: terraform init
