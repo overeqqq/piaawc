@@ -9,23 +9,19 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-
-      - name: Start LocalStack
-        uses: localstack/start-localstack@latest
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          services: s3
+          terraform_version: 1.0.0
+
+      - name: Run localstack with docker
+        run: docker run --rm -it -p 4566:4566 -p 4571:4571 localstack/localstack
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Apply
         run: terraform apply
-        env:
-          AWS_DEFAULT_REGION: us-east-1
-          AWS_ACCESS_KEY_ID: test
-          AWS_SECRET_ACCESS_KEY: test
-          AWS_S3_ENDPOINT: http://localhost:4566
